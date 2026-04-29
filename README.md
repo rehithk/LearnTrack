@@ -1,52 +1,39 @@
 # LearnTrack
 
-A console-based Student & Course Management System built using Core Java. It allows admins to manage students, courses, and enrollments through a menu-driven interface.
+LearnTrack is a console based java project where you can manage students, courses and enrollments. You can add students, enroll them in courses and track their status. Everything runs in the terminal.
 
 ---
 
-## How to Compile and Run
+## How to run
 
-**Requirements:** JDK 21+
+Make sure you have JDK installed. Then from the project root:
 
 ```bash
-# From the project root, compile all files
 find src -name "*.java" | xargs javac -d out
-
-# Run the application
 java -cp out com.airtribe.learntrack.Main
 ```
 
----
-
-## Features
-
-**Student Management**
-- Add a new student (with or without email)
-- View all students
-- Search student by ID
-- Deactivate a student
-
-**Course Management**
-- Add a new course
-- View all courses
-- Activate / Deactivate a course
-
-**Enrollment Management**
-- Enroll a student in a course
-- View enrollments for a student
-- Update enrollment status (ACTIVE / COMPLETED / CANCELLED)
+Or just open it in VS Code and hit the run button on Main.java.
 
 ---
 
-## Package Structure
+## What you can do
+
+- Add students, view them, search by ID, deactivate them
+- Add courses, view them, toggle active/inactive
+- Enroll a student into a course, view their enrollments, mark as completed or cancelled
+
+---
+
+## Project structure
 
 ```
 src/com/airtribe/learntrack/
-├── Main.java                  # Entry point, menu-driven UI
+├── Main.java
 ├── entity/
-│   ├── Person.java            # Base class
-│   ├── Student.java           # Extends Person
-│   ├── Trainer.java           # Extends Person
+│   ├── Person.java
+│   ├── Student.java
+│   ├── Trainer.java
 │   ├── Course.java
 │   └── Enrollment.java
 ├── service/
@@ -122,26 +109,26 @@ classDiagram
 
     class StudentService {
         -ArrayList~Student~ students
-        +addStudent(String, String, String, String)
-        +getAllStudents() ArrayList
-        +getStudentById(int) Student
+        +addStudent()
+        +getAllStudents()
+        +getStudentById(int)
         +deactivateStudent(int)
-        +updateStudent(int, String, String, String, String)
+        +updateStudent()
     }
 
     class CourseService {
         -ArrayList~Course~ courses
-        +addCourse(String, String, int)
-        +getAllCourses() ArrayList
-        +getCourseById(int) Course
+        +addCourse()
+        +getAllCourses()
+        +getCourseById(int)
         +setActive(int, boolean)
     }
 
     class EnrollmentService {
         -ArrayList~Enrollment~ enrollments
-        +enrollStudent(int, int, String)
-        +getEnrollmentsByStudentId(int) ArrayList
-        +getEnrollmentById(int) Enrollment
+        +enrollStudent()
+        +getEnrollmentsByStudentId(int)
+        +getEnrollmentById(int)
         +updateStatus(int, String)
     }
 
@@ -171,7 +158,7 @@ classDiagram
 
 ---
 
-## Documentation
+## Docs
 
 - [Setup Instructions](docs/Setup_Instructions.md)
 - [JVM Basics](docs/JVM_Basics.md)
