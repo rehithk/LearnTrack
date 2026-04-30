@@ -1,19 +1,21 @@
 package com.airtribe.learntrack.entity;
 
+import java.time.LocalDate;
+
 public class Enrollment {
-  
+
   private int id;
   private int studentId;
   private int courseId;
-  private String enrollmentDate;
-  private String status;
+  private LocalDate enrollmentDate;
+  private EnrollmentStatus status;
 
-  public Enrollment(int id, int studentId, int courseId, String enrollmentDate) {
+  public Enrollment(int id, int studentId, int courseId, LocalDate enrollmentDate) {
     this.id = id;
     this.studentId = studentId;
     this.courseId = courseId;
     this.enrollmentDate = enrollmentDate;
-    this.status = "ACTIVE";
+    this.status = EnrollmentStatus.ACTIVE;
   }
 
   public int getId() {
@@ -28,15 +30,15 @@ public class Enrollment {
     return courseId;
   }
 
-  public String getEnrollmentDate() {
+  public LocalDate getEnrollmentDate() {
     return enrollmentDate;
   }
 
-  public String getStatus() {
+  public EnrollmentStatus getStatus() {
     return status;
   }
 
-  public void setStatus(String status) {
+  public void setStatus(EnrollmentStatus status) {
     this.status = status;
   }
 }

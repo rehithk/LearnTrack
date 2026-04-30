@@ -1,12 +1,13 @@
 package com.airtribe.learntrack.service;
 
 import java.util.ArrayList;
+import java.util.List;
 import com.airtribe.learntrack.entity.Course;
 import com.airtribe.learntrack.util.IdGenerator;
 
 public class CourseService {
-  
-  private ArrayList<Course> courses;
+
+  private List<Course> courses;
 
   public CourseService() {
     this.courses = new ArrayList<>();
@@ -17,9 +18,9 @@ public class CourseService {
     Course course = new Course(id, courseName, description, durationInWeeks);
     courses.add(course);
   }
-  
-  public ArrayList<Course> getAllCourses() {
-    return courses;
+
+  public List<Course> getAllCourses() {
+    return new ArrayList<>(courses);
   }
 
   public Course getCourseById(int id) {

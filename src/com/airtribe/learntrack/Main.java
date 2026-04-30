@@ -2,13 +2,16 @@ package com.airtribe.learntrack;
 
 import com.airtribe.learntrack.entity.Course;
 import com.airtribe.learntrack.entity.Enrollment;
+import com.airtribe.learntrack.entity.EnrollmentStatus;
 import com.airtribe.learntrack.entity.Student;
 import com.airtribe.learntrack.exception.EntityNotFoundException;
 import com.airtribe.learntrack.service.CourseService;
 import com.airtribe.learntrack.service.EnrollmentService;
 import com.airtribe.learntrack.service.StudentService;
 
-import java.util.ArrayList;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -94,9 +97,17 @@ public class Main {
     static void addStudent() {
         System.out.print("Enter first name: ");
         String firstName = scanner.nextLine().trim();
+        if (firstName.isEmpty()) {
+            System.out.println("First name cannot be empty.");
+            return;
+        }
 
         System.out.print("Enter last name: ");
         String lastName = scanner.nextLine().trim();
+        if (lastName.isEmpty()) {
+            System.out.println("Last name cannot be empty.");
+            return;
+        }
 
         System.out.print("Enter email (press Enter to skip): ");
         String email = scanner.nextLine().trim();
@@ -114,7 +125,7 @@ public class Main {
     }
 
     static void viewAllStudents() {
-        ArrayList<Student> students = studentService.getAllStudents();
+        List<Student> students = studentService.getAllStudents();
 
         if (students.isEmpty()) {
             System.out.println("No students found.");
@@ -209,6 +220,10 @@ public class Main {
     static void addCourse() {
         System.out.print("Enter course name: ");
         String name = scanner.nextLine().trim();
+        if (name.isEmpty()) {
+            System.out.println("Course name cannot be empty.");
+            return;
+        }
 
         System.out.print("Enter description: ");
         String description = scanner.nextLine().trim();
@@ -225,7 +240,7 @@ public class Main {
     }
 
     static void viewAllCourses() {
-        ArrayList<Course> courses = courseService.getAllCourses();
+        List<Course> courses = courseService.getAllCourses();
 
         if (courses.isEmpty()) {
             System.out.println("No courses found.");
@@ -309,6 +324,10 @@ public class Main {
             if (s == null) {
                 throw new EntityNotFoundException("Student with ID " + studentId + " not found.");
             }
+            if (!s.isActive()) {
+                System.out.println("Cannot enroll: student ID " + studentId + " is not active.");
+                return;
+            }
 
             System.out.print("Enter course ID: ");
             int courseId = Integer.parseInt(scanner.nextLine().trim());
@@ -316,15 +335,22 @@ public class Main {
             if (c == null) {
                 throw new EntityNotFoundException("Course with ID " + courseId + " not found.");
             }
+            if (!c.isActive()) {
+                System.out.println("Cannot enroll: course ID " + courseId + " is not active.");
+                return;
+            }
 
             System.out.print("Enter enrollment date (YYYY-MM-DD): ");
-            String date = scanner.nextLine().trim();
+            String dateInput = scanner.nextLine().trim();
+            LocalDate enrollmentDate = LocalDate.parse(dateInput);
 
-            enrollmentService.enrollStudent(studentId, courseId, date);
+            enrollmentService.enrollStudent(studentId, courseId, enrollmentDate);
             System.out.println("Student enrolled successfully!");
 
         } catch (NumberFormatException e) {
             System.out.println("Invalid ID entered.");
+        } catch (DateTimeParseException e) {
+            System.out.println("Invalid date format. Please use YYYY-MM-DD.");
         }
     }
 
@@ -333,7 +359,7 @@ public class Main {
 
         try {
             int studentId = Integer.parseInt(scanner.nextLine().trim());
-            ArrayList<Enrollment> enrollments = enrollmentService.getEnrollmentsByStudentId(studentId);
+            List<Enrollment> enrollments = enrollmentService.getEnrollmentsByStudentId(studentId);
 
             if (enrollments.isEmpty()) {
                 System.out.println("No enrollments found for student ID " + studentId + ".");
@@ -371,14 +397,14 @@ public class Main {
             System.out.print("Enter your choice: ");
 
             int statusChoice = Integer.parseInt(scanner.nextLine().trim());
-            String newStatus = "";
+            EnrollmentStatus newStatus;
 
             if (statusChoice == 1) {
-                newStatus = "ACTIVE";
+                newStatus = EnrollmentStatus.ACTIVE;
             } else if (statusChoice == 2) {
-                newStatus = "COMPLETED";
+                newStatus = EnrollmentStatus.COMPLETED;
             } else if (statusChoice == 3) {
-                newStatus = "CANCELLED";
+                newStatus = EnrollmentStatus.CANCELLED;
             } else {
                 System.out.println("Invalid choice.");
                 return;

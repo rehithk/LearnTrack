@@ -1,12 +1,14 @@
 package com.airtribe.learntrack.service;
+
 import com.airtribe.learntrack.entity.Student;
 import com.airtribe.learntrack.util.IdGenerator;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class StudentService {
-  
-  private ArrayList<Student> students;
+
+  private List<Student> students;
 
   public StudentService() {
     this.students = new ArrayList<>();
@@ -18,8 +20,8 @@ public class StudentService {
     students.add(student);
   }
 
-  public ArrayList<Student> getAllStudents() {
-    return students;
+  public List<Student> getAllStudents() {
+    return new ArrayList<>(students);
   }
 
   public Student getStudentById(int id) {
